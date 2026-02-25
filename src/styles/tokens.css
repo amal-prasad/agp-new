@@ -1,0 +1,60 @@
+/* === Design Tokens === */
+:root {
+  /* --- Colors --- */
+  --c-bg: #FAFAF8;
+  --c-bg-dark: #0A0A0A;
+  --c-text: #0A0A0A;
+  --c-text-muted: #6B6B6B;
+  --c-text-light: #999999;
+  --c-accent: #1A1A1A;
+  --c-border: #E0E0DC;
+  --c-border-light: #F0F0EC;
+  --c-white: #FFFFFF;
+  --c-overlay: rgba(10, 10, 10, 0.96);
+
+  /* --- Typography --- */
+  --f-display: 'Space Grotesk', sans-serif;
+  --f-body: 'Inter', sans-serif;
+  --f-mono: 'JetBrains Mono', monospace;
+
+  /* --- Type Scale (fluid) --- */
+  --fs-hero: clamp(4rem, 12vw, 14rem);
+  --fs-display: clamp(2.5rem, 6vw, 7rem);
+  --fs-h1: clamp(2rem, 4vw, 4.5rem);
+  --fs-h2: clamp(1.5rem, 3vw, 3rem);
+  --fs-h3: clamp(1.2rem, 2vw, 1.75rem);
+  --fs-body: clamp(0.95rem, 1.1vw, 1.125rem);
+  --fs-small: clamp(0.75rem, 0.9vw, 0.875rem);
+  --fs-mono: clamp(0.7rem, 0.8vw, 0.8rem);
+  --fs-label: clamp(0.65rem, 0.7vw, 0.75rem);
+
+  /* --- Spacing Scale --- */
+  --s-xs: 0.5rem;
+  --s-sm: 1rem;
+  --s-md: 2rem;
+  --s-lg: 4rem;
+  --s-xl: 6rem;
+  --s-2xl: 8rem;
+  --s-3xl: 12rem;
+  --s-section: clamp(6rem, 12vh, 10rem);
+  --s-gutter: clamp(1.5rem, 4vw, 4rem);
+
+  /* --- Layout --- */
+  --max-width: 1440px;
+  --nav-height: 60px;
+
+  /* --- Transitions --- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --dur-fast: 0.3s;
+  --dur-normal: 0.6s;
+  --dur-slow: 1s;
+  --dur-very-slow: 1.5s;
+
+  /* --- Z-index layers --- */
+  --z-base: 1;
+  --z-nav: 100;
+  --z-overlay: 500;
+  --z-preloader: 1000;
+}

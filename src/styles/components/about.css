@@ -1,0 +1,138 @@
+/* === About / Team === */
+.about {
+  width: 100%;
+  padding: var(--s-section) var(--s-gutter);
+  background-color: var(--c-bg);
+  overflow: hidden;
+}
+
+.about__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.about__statement {
+  font-family: var(--f-display);
+  font-size: var(--fs-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin-bottom: var(--s-3xl);
+}
+
+.about__statement .char {
+  display: inline-block;
+  opacity: 0.15;
+}
+
+/* Value props */
+.about__values {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-md);
+  margin-bottom: var(--s-3xl);
+  padding-top: var(--s-lg);
+  border-top: 1px solid var(--c-border);
+}
+
+.about__value {
+  padding-right: var(--s-md);
+}
+
+.about__value-number {
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+  margin-bottom: var(--s-sm);
+}
+
+.about__value-title {
+  font-family: var(--f-display);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--s-xs);
+}
+
+.about__value-desc {
+  font-family: var(--f-body);
+  font-size: var(--fs-small);
+  color: var(--c-text-muted);
+  line-height: 1.6;
+}
+
+/* Team */
+.about__team-label {
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+  margin-bottom: var(--s-md);
+}
+
+.about__team {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-md);
+  max-width: 700px;
+}
+
+.about__member {
+  display: flex;
+  align-items: center;
+  gap: var(--s-sm);
+  padding: var(--s-md);
+  border: 1px solid var(--c-border);
+  border-radius: 4px;
+}
+
+.about__member-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.about__member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.about__member-name {
+  font-family: var(--f-display);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.about__member-role {
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .about__values {
+    grid-template-columns: 1fr;
+    gap: var(--s-lg);
+  }
+
+  .about__team {
+    grid-template-columns: 1fr;
+  }
+
+  .about__statement {
+    margin-bottom: var(--s-xl);
+  }
+}

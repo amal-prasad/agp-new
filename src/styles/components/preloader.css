@@ -1,0 +1,55 @@
+/* === Preloader === */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  background-color: var(--c-bg-dark);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: var(--s-lg);
+  pointer-events: all;
+}
+
+.preloader__counter {
+  font-family: var(--f-mono);
+  font-size: clamp(3rem, 8vw, 8rem);
+  font-weight: 300;
+  color: var(--c-bg);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.preloader__line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--c-bg);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.preloader__label {
+  position: absolute;
+  top: var(--s-lg);
+  left: var(--s-lg);
+  font-family: var(--f-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.15em;
+  color: var(--c-text-muted);
+  text-transform: uppercase;
+}
+
+.preloader__brand {
+  position: absolute;
+  top: var(--s-lg);
+  right: var(--s-lg);
+  font-family: var(--f-display);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  color: var(--c-bg);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}

@@ -1,0 +1,83 @@
+/* === Global Styles === */
+@import './reset.css';
+@import './tokens.css';
+
+body {
+  font-family: var(--f-body);
+  font-size: var(--fs-body);
+  color: var(--c-text);
+  background-color: var(--c-bg);
+  overflow-x: hidden;
+}
+
+/* --- Selection --- */
+::selection {
+  background-color: var(--c-text);
+  color: var(--c-bg);
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--c-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--c-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-text-muted);
+}
+
+/* --- Typography Utilities --- */
+.display-font {
+  font-family: var(--f-display);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.mono-font {
+  font-family: var(--f-mono);
+  font-weight: 400;
+  font-size: var(--fs-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.label {
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+}
+
+/* --- Section wrapper --- */
+.section {
+  width: 100%;
+  padding: var(--s-section) var(--s-gutter);
+  position: relative;
+}
+
+.section-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* --- Reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

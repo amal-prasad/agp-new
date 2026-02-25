@@ -1,0 +1,71 @@
+/* === Clients Marquee === */
+.clients {
+  width: 100%;
+  padding: var(--s-xl) 0;
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
+  overflow: hidden;
+  background-color: var(--c-bg);
+}
+
+.clients__label {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+  text-align: center;
+  margin-bottom: var(--s-md);
+}
+
+.clients__track-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.clients__track-wrapper::before,
+.clients__track-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.clients__track-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, var(--c-bg), transparent);
+}
+
+.clients__track-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, var(--c-bg), transparent);
+}
+
+.clients__track {
+  display: flex;
+  align-items: center;
+  gap: var(--s-lg);
+  white-space: nowrap;
+}
+
+.clients__item {
+  font-family: var(--f-display);
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--c-text);
+  flex-shrink: 0;
+}
+
+.clients__separator {
+  font-family: var(--f-mono);
+  font-size: var(--fs-small);
+  color: var(--c-text-light);
+  flex-shrink: 0;
+}

@@ -1,0 +1,95 @@
+/* === Navbar === */
+.navbar {
+  position: fixed;
+  top: var(--s-sm);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  gap: var(--s-xs);
+  padding: 0.6rem 1.5rem;
+  border-radius: 100px;
+  background: rgba(250, 250, 248, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--c-border-light);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-normal) var(--ease-out-expo);
+  contain: layout style;
+}
+
+.navbar.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.navbar__logo {
+  width: 28px;
+  height: 28px;
+  margin-right: var(--s-xs);
+  object-fit: contain;
+}
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+/* Sliding pill — sits behind text, animated via GSAP */
+.navbar__pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--c-text);
+  border-radius: 100px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.navbar__link {
+  position: relative;
+  z-index: 1;
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-text);
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  transition: color var(--dur-fast) var(--ease-smooth);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.navbar__link:hover:not(.active) {
+  color: var(--c-text-muted);
+}
+
+.navbar__link.active {
+  color: var(--c-bg);
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .navbar {
+    padding: 0.4rem 0.8rem;
+    gap: 0;
+  }
+
+  .navbar__logo {
+    width: 22px;
+    height: 22px;
+    margin-right: 0.25rem;
+  }
+
+  .navbar__link {
+    font-size: 0.6rem;
+    padding: 0.4rem 0.6rem;
+    letter-spacing: 0.08em;
+  }
+}
