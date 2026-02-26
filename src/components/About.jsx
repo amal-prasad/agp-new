@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import { useSectionWipe } from '../hooks/useSectionWipe';
 import '../styles/components/about.css';
 
 const VALUES = [
@@ -38,6 +39,9 @@ export default function About() {
   const statementRef = useRef(null);
   const originalTextRef = useRef('');
 
+  // Section wipe transition
+  useSectionWipe(sectionRef);
+
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
@@ -51,22 +55,36 @@ export default function About() {
     }
 
     const statementEl = statementRef.current;
-    // Store the original text for cleanup/restore
+    // Store the original HTML for cleanup/restore (preserves <br />)
     if (statementEl && !originalTextRef.current) {
-      originalTextRef.current = statementEl.textContent;
+      originalTextRef.current = statementEl.innerHTML;
     }
 
     const ctx = gsap.context(() => {
-      // Split statement text into characters — use DocumentFragment to batch DOM mutations
+      // Split statement text into characters — preserve <br> line breaks
       if (statementEl) {
-        const text = originalTextRef.current;
+        const html = originalTextRef.current;
         statementEl.innerHTML = '';
         const fragment = document.createDocumentFragment();
-        text.split('').forEach((char) => {
-          const span = document.createElement('span');
-          span.className = 'char';
-          span.textContent = char === ' ' ? '\u00A0' : char;
-          fragment.appendChild(span);
+        // Split by <br /> or <br> to preserve line breaks
+        const lines = html.split(/<br\s*\/?>/i);
+        lines.forEach((line, lineIndex) => {
+          // Trim whitespace from each line segment
+          const trimmedLine = line.replace(/&[^;]+;/g, (m) => {
+            const el = document.createElement('span');
+            el.innerHTML = m;
+            return el.textContent;
+          }).trim();
+          trimmedLine.split('').forEach((char) => {
+            const span = document.createElement('span');
+            span.className = 'char';
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            fragment.appendChild(span);
+          });
+          // Insert <br> between lines (not after the last)
+          if (lineIndex < lines.length - 1) {
+            fragment.appendChild(document.createElement('br'));
+          }
         });
         statementEl.appendChild(fragment);
 
@@ -86,7 +104,7 @@ export default function About() {
         });
       }
 
-      // Values fade in
+      // Values fade in with stagger
       const values = sectionRef.current.querySelectorAll('.about__value');
       gsap.fromTo(
         values,
@@ -105,6 +123,35 @@ export default function About() {
           },
         }
       );
+
+      // Counter animation on value numbers
+      const numberEls = sectionRef.current.querySelectorAll('.about__value-number');
+      numberEls.forEach((el) => {
+        const targetText = el.textContent; // e.g. "(01)"
+        const match = targetText.match(/(\d+)/);
+        if (match) {
+          const targetNum = parseInt(match[1], 10);
+          const prefix = targetText.substring(0, targetText.indexOf(match[1]));
+          const suffix = targetText.substring(targetText.indexOf(match[1]) + match[1].length);
+
+          gsap.from(
+            { val: 0 },
+            {
+              val: targetNum,
+              duration: 1.5,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: el,
+                start: 'top 85%',
+                toggleActions: 'play none none none',
+              },
+              onUpdate: function () {
+                el.textContent = `${prefix}${String(Math.round(this.targets()[0].val)).padStart(2, '0')}${suffix}`;
+              },
+            }
+          );
+        }
+      });
 
       // Team cards fade in
       const members = sectionRef.current.querySelectorAll('.about__member');
@@ -137,10 +184,11 @@ export default function About() {
   }, []);
 
   return (
-    <section className="about section" id="about" ref={sectionRef}>
+    <section className="about section section-dark" id="about" ref={sectionRef}>
+      <div className="section-wipe" />
       <div className="about__inner">
         <h2 className="about__statement" ref={statementRef}>
-          ENGINEERING YOUR BRAND'S PHYSICAL IDENTITY
+          ENGINEERING YOUR BRAND'S<br />IDENTITY
         </h2>
 
         <div className="about__values">

@@ -1,0 +1,39 @@
+/* === Services Keyword Marquee === */
+.marquee {
+    width: 100%;
+    padding: var(--s-lg) 0;
+    overflow: hidden;
+    border-top: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--c-border);
+}
+
+.marquee__track-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.marquee__track {
+    display: flex;
+    align-items: center;
+    gap: var(--s-md);
+    white-space: nowrap;
+    will-change: transform;
+}
+
+.marquee__item {
+    font-family: var(--f-display);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--c-text);
+    flex-shrink: 0;
+}
+
+.marquee__dot {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    color: var(--c-text-muted);
+    flex-shrink: 0;
+    margin: 0 var(--s-sm);
+}

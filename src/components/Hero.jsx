@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import ThreeCube from './ThreeCube';
 import '../styles/components/hero.css';
 
 export default function Hero({ isLoading }) {
@@ -14,7 +15,7 @@ export default function Hero({ isLoading }) {
 
     if (prefersReducedMotion) {
       // Just show everything immediately
-      const spans = heroRef.current?.querySelectorAll('.hero__title-line span, .hero__subtitle span');
+      const spans = heroRef.current?.querySelectorAll('.hero__title-line > span, .hero__subtitle > span');
       spans?.forEach((span) => {
         span.style.transform = 'translateY(0)';
       });
@@ -22,8 +23,8 @@ export default function Hero({ isLoading }) {
     }
 
     const ctx = gsap.context(() => {
-      const titleSpans = heroRef.current.querySelectorAll('.hero__title-line span');
-      const subtitleSpan = heroRef.current.querySelector('.hero__subtitle span');
+      const titleSpans = heroRef.current.querySelectorAll('.hero__title-line > span');
+      const subtitleSpan = heroRef.current.querySelector('.hero__subtitle > span');
 
       const tl = gsap.timeline({ delay: 0.2 });
 
@@ -66,14 +67,18 @@ export default function Hero({ isLoading }) {
   }, [isLoading]);
 
   return (
-    <section className="hero" id="hero" ref={heroRef}>
-      {/* 3D Slot — reserved for future Spline integration */}
-      <div className="hero__3d-slot" id="hero-3d-slot" />
+    <section className="hero section-light" id="hero" ref={heroRef}>
+      {/* 3D wireframe cube — scroll-scrubbed */}
+      <div className="hero__3d-slot" id="hero-3d-slot">
+        <ThreeCube />
+      </div>
 
       <div className="hero__content">
         <h1 className="hero__title">
           <span className="hero__title-line">
-            <span><img src="/logo.png" alt="AGP" className="hero__logo" /></span>
+            <span className="hero__title-agp">
+              <img src="/logo.png" alt="" className="hero__logo" />
+            </span>
           </span>
           <span className="hero__title-line">
             <span>ENTERPRISES</span>

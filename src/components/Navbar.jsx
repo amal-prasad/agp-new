@@ -12,8 +12,10 @@ const NAV_ITEMS = [
 export default function Navbar({ isLoading }) {
   const [visible, setVisible] = useState(false);
   const [active, setActive] = useState('HOME');
+  const [onDark, setOnDark] = useState(false); // Hero is light now
   const pillRef = useRef(null);
   const linksRef = useRef(null);
+  const navRef = useRef(null);
   const buttonsRef = useRef({});
 
   useEffect(() => {
@@ -59,8 +61,7 @@ export default function Navbar({ isLoading }) {
     if (visible) movePill(active);
   }, [active, visible, movePill]);
 
-  // Track active section on scroll — uses getBoundingClientRect() to
-  // correctly handle pinned sections (Services horizontal scroll)
+  // Track active section on scroll + detect dark/light section
   useEffect(() => {
     const sections = NAV_ITEMS.map((item) =>
       document.querySelector(item.target)
@@ -78,6 +79,22 @@ export default function Navbar({ isLoading }) {
           if (sections[i].getBoundingClientRect().top <= threshold) {
             setActive(NAV_ITEMS[i].label);
             break;
+          }
+        }
+
+        // Detect if navbar overlaps a dark section
+        const nav = navRef.current;
+        if (nav) {
+          const navRect = nav.getBoundingClientRect();
+          const navMidY = navRect.top + navRect.height / 2;
+          const navMidX = navRect.left + navRect.width / 2;
+          // Temporarily hide nav to get element behind it
+          nav.style.pointerEvents = 'none';
+          const elBehind = document.elementFromPoint(navMidX, navMidY);
+          nav.style.pointerEvents = '';
+          if (elBehind) {
+            const darkSection = elBehind.closest('.section-dark');
+            setOnDark(!!darkSection);
           }
         }
       });
@@ -106,7 +123,11 @@ export default function Navbar({ isLoading }) {
   }, []);
 
   return (
-    <nav className={`navbar ${visible ? 'visible' : ''}`} role="navigation">
+    <nav
+      className={`navbar ${visible ? 'visible' : ''} ${onDark ? 'navbar--dark' : ''}`}
+      role="navigation"
+      ref={navRef}
+    >
       <img
         src="/logo.png"
         alt="AGP Enterprises"

@@ -87,7 +87,7 @@ export default function Services() {
   }, []);
 
   return (
-    <section className="services" id="services" ref={sectionRef}>
+    <section className="services section-dark" id="services" ref={sectionRef}>
       <div className="services__inner" ref={trackRef}>
         <div className="services__header">
           <span className="services__label">What we do</span>

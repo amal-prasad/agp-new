@@ -1,5 +1,7 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useSectionWipe } from '../hooks/useSectionWipe';
 import '../styles/components/work.css';
 
 const CATEGORIES = [
@@ -27,6 +29,12 @@ const CATEGORIES = [
 
 export default function Work() {
   const sectionRef = useRef(null);
+
+  // Section wipe transition
+  useSectionWipe(sectionRef);
+
+  // Scroll reveal for header
+  useScrollReveal(sectionRef, '.work__header', { y: 40, duration: 0.8 });
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -63,7 +71,8 @@ export default function Work() {
   }, []);
 
   return (
-    <section className="work" id="work" ref={sectionRef}>
+    <section className="work section-light" id="work" ref={sectionRef}>
+      <div className="section-wipe" />
       <div className="work__inner">
         <div className="work__header">
           <div>

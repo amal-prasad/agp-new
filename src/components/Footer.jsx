@@ -25,10 +25,6 @@ export default function Footer() {
             BUILT WITH PRECISION — VITE + REACT + GSAP
           </span>
         </div>
-
-        <div className="footer__barcode">
-          ||| |||| || ||| || |||| ||| || |||| || ||| |||| || ||| || |||| ||| || AGP-ENT-{year}-IND || ||| |||| || ||| || |||| ||| || |||| || ||| |||| || ||| || |||| ||| ||
-        </div>
       </div>
     </footer>
   );

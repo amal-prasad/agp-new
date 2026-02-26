@@ -5,11 +5,13 @@ import Preloader from './components/Preloader';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
+import Marquee from './components/Marquee';
 import Work from './components/Work';
 import About from './components/About';
 import Clients from './components/Clients';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import CustomCursor from './components/CustomCursor';
 import './styles/global.css';
 
 export default function App() {
@@ -28,11 +30,13 @@ export default function App() {
 
   return (
     <>
+      <CustomCursor />
       <Preloader onComplete={handlePreloaderComplete} />
       <Navbar isLoading={isLoading} />
       <main>
         <Hero isLoading={isLoading} />
         <Services />
+        <Marquee />
         <Work />
         <About />
         <Clients />

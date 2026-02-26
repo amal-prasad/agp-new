@@ -5,7 +5,6 @@
   border-top: 1px solid var(--c-border);
   border-bottom: 1px solid var(--c-border);
   overflow: hidden;
-  background-color: var(--c-bg);
 }
 
 .clients__label {

@@ -2,7 +2,6 @@
 .contact {
   width: 100%;
   padding: var(--s-section) var(--s-gutter);
-  background-color: var(--c-bg);
 }
 
 .contact__inner {
@@ -128,7 +127,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color var(--dur-fast) var(--ease-smooth),
-              color var(--dur-fast) var(--ease-smooth);
+    color var(--dur-fast) var(--ease-smooth);
   align-self: flex-start;
 }
 
@@ -149,11 +148,11 @@
 }
 
 .contact__form-status.success {
-  color: #2d8f2d;
+  color: #4caf50;
 }
 
 .contact__form-status.error {
-  color: #c0392b;
+  color: #ef5350;
 }
 
 /* Mobile */

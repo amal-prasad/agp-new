@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import { useSectionWipe } from '../hooks/useSectionWipe';
 import '../styles/components/clients.css';
 
 const CLIENTS = [
@@ -17,7 +18,11 @@ const CLIENTS = [
 const DOUBLED_CLIENTS = [...CLIENTS, ...CLIENTS];
 
 export default function Clients() {
+  const sectionRef = useRef(null);
   const trackRef = useRef(null);
+
+  // Section wipe transition
+  useSectionWipe(sectionRef);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -46,7 +51,8 @@ export default function Clients() {
   }, []);
 
   return (
-    <section className="clients" id="clients">
+    <section className="clients section-light" id="clients" ref={sectionRef}>
+      <div className="section-wipe" />
       <div className="clients__label">Trusted By</div>
       <div className="clients__track-wrapper">
         <div className="clients__track" ref={trackRef}>

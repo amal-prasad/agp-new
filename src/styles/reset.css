@@ -11,7 +11,8 @@ html {
   -moz-text-size-adjust: none;
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
-  scroll-behavior: auto; /* Lenis handles smooth scroll */
+  scroll-behavior: auto;
+  /* Lenis handles smooth scroll */
 }
 
 body {
@@ -29,6 +30,9 @@ canvas,
 svg {
   display: block;
   max-width: 100%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 input,

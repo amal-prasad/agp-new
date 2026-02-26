@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import emailjs from '@emailjs/browser';
+import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useSectionWipe } from '../hooks/useSectionWipe';
 import '../styles/components/contact.css';
 
 // EmailJS credentials — set via VITE_EMAILJS_* environment variables
@@ -26,35 +28,16 @@ export default function Contact() {
   const [status, setStatus] = useState(null); // 'success' | 'error' | null
   const [sending, setSending] = useState(false);
 
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
+  // Section wipe transition
+  useSectionWipe(sectionRef);
 
-    if (prefersReducedMotion) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.contact__info, .contact__form',
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.2,
-          ease: 'power3.out',
-          force3D: true,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 75%',
-            toggleActions: 'play none none none',
-          },
-        }
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+  // Scroll reveal for info and form columns
+  useScrollReveal(sectionRef, '.contact__info, .contact__form', {
+    y: 50,
+    duration: 1,
+    stagger: 0.2,
+    start: 'top 75%',
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,7 +64,8 @@ export default function Contact() {
   };
 
   return (
-    <section className="contact section" id="contact" ref={sectionRef}>
+    <section className="contact section section-dark" id="contact" ref={sectionRef}>
+      <div className="section-wipe" />
       <div className="contact__inner">
         {/* Left — Info */}
         <div className="contact__info">
@@ -113,9 +97,9 @@ export default function Contact() {
             <div>
               <span className="contact__detail-label">Address</span>
               <p className="contact__detail-value">
-                117, Siyaganj, Indore
+                Treasure Fantasy, Rau, A-36/104, Indore
                 <br />
-                Madhya Pradesh 452001, India
+                Madhya Pradesh, India 453331
               </p>
             </div>
           </div>

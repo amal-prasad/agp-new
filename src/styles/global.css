@@ -20,13 +20,16 @@ body {
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--c-bg);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--c-border);
   border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--c-text-muted);
 }
@@ -70,8 +73,50 @@ body {
   width: 100%;
 }
 
+/* --- Section Theming --- */
+.section-dark {
+  background-color: var(--c-bg-dark);
+  color: var(--c-text-on-dark);
+  position: relative;
+  --c-text: var(--c-text-on-dark);
+  --c-text-muted: var(--c-text-muted-on-dark);
+  --c-text-light: var(--c-text-muted-on-dark);
+  --c-border: var(--c-border-dark);
+  --c-border-light: var(--c-border-dark);
+  --c-bg: var(--c-bg-dark);
+}
+
+.section-light {
+  background-color: var(--c-bg-light, #FAFAF8);
+  background-image: url('/paper-texture.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--c-text);
+  position: relative;
+}
+
+/* --- Section Wipe Overlay --- */
+.section-wipe {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform: scaleX(1);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.section-dark .section-wipe {
+  background: var(--c-bg-dark);
+}
+
+.section-light .section-wipe {
+  background: #FAFAF8;
+}
+
 /* --- Reduced motion --- */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {

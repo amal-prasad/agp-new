@@ -12,7 +12,10 @@
 
 .hero__3d-slot {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 50%;
   z-index: 0;
   pointer-events: none;
 }
@@ -40,15 +43,28 @@
   overflow: hidden;
 }
 
-.hero__title-line span {
+.hero__title-line>span {
   display: inline-block;
   transform: translateY(110%);
 }
 
+.hero__title-agp {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(0.3rem, 1vw, 1rem);
+  flex-wrap: nowrap;
+  transform: translateY(110%);
+}
+
+.hero__title-agp>* {
+  flex-shrink: 0;
+}
+
 .hero__logo {
-  height: var(--fs-hero);
+  height: 1.1em;
   width: auto;
-  display: block;
+  display: inline;
+  vertical-align: middle;
   object-fit: contain;
 }
 
@@ -96,8 +112,15 @@
 }
 
 @keyframes bounceDown {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(6px);
+  }
 }
 
 .hero__meta--bottom-left {

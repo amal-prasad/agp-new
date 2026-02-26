@@ -2,7 +2,6 @@
 .services {
   width: 100%;
   overflow: hidden;
-  background-color: var(--c-bg);
   position: relative;
 }
 
@@ -38,6 +37,7 @@
   text-transform: uppercase;
   letter-spacing: -0.02em;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .services__count {

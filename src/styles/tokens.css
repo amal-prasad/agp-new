@@ -9,8 +9,14 @@
   --c-accent: #1A1A1A;
   --c-border: #E0E0DC;
   --c-border-light: #F0F0EC;
+  --c-bg-light: #F5F5F5;
   --c-white: #FFFFFF;
   --c-overlay: rgba(10, 10, 10, 0.96);
+
+  /* Dark section overrides */
+  --c-text-on-dark: #FAFAF8;
+  --c-text-muted-on-dark: #999999;
+  --c-border-dark: rgba(255, 255, 255, 0.12);
 
   /* --- Typography --- */
   --f-display: 'Space Grotesk', sans-serif;

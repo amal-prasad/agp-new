@@ -2,7 +2,6 @@
 .about {
   width: 100%;
   padding: var(--s-section) var(--s-gutter);
-  background-color: var(--c-bg);
   overflow: hidden;
 }
 
@@ -19,6 +18,8 @@
   letter-spacing: -0.03em;
   line-height: 0.95;
   margin-bottom: var(--s-3xl);
+  word-break: keep-all;
+  overflow-wrap: normal;
 }
 
 .about__statement .char {
