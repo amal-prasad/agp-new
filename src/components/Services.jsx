@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import { useWordReveal } from '../hooks/useWordReveal';
 import '../styles/components/services.css';
 
 const SERVICES = [
@@ -48,6 +49,9 @@ const SERVICES = [
 export default function Services() {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
+
+  // Word-by-word reveal on card titles
+  useWordReveal(sectionRef, '.services__card-name', { stagger: 0.03, start: 'top 90%' });
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(

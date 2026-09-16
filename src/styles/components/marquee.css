@@ -1,39 +1,57 @@
-/* === Services Keyword Marquee === */
+/* === Full-Viewport Scrolling Text Wall === */
 .marquee {
     width: 100%;
-    padding: var(--s-lg) 0;
-    overflow: hidden;
-    border-top: 1px solid var(--c-border);
-    border-bottom: 1px solid var(--c-border);
-}
-
-.marquee__track-wrapper {
-    width: 100%;
+    padding: var(--s-2xl) 0;
     overflow: hidden;
     position: relative;
+    background-color: #e8e4df;
+    contain: content;
 }
 
-.marquee__track {
+.marquee__inner {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.5rem, 1.5vw, 1.5rem);
+}
+
+/* Each row: horizontal flex of words, no wrapping, overflows viewport */
+.marquee__row {
     display: flex;
     align-items: center;
-    gap: var(--s-md);
+    gap: clamp(1rem, 2.5vw, 2.5rem);
     white-space: nowrap;
     will-change: transform;
+    justify-content: center;
 }
 
-.marquee__item {
+/* Giant keywords */
+.marquee__word {
     font-family: var(--f-display);
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-size: clamp(3rem, 8vw, 7rem);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
-    color: var(--c-text);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: rgba(10, 10, 10, 0.08);
     flex-shrink: 0;
+    user-select: none;
 }
 
-.marquee__dot {
-    font-size: clamp(1rem, 2vw, 1.5rem);
-    color: var(--c-text-muted);
+/* Star dividers between words */
+.marquee__star {
+    font-size: clamp(1rem, 2.5vw, 2rem);
+    color: rgba(10, 10, 10, 0.12);
     flex-shrink: 0;
-    margin: 0 var(--s-sm);
+    line-height: 1;
+}
+
+/* Mobile: smaller text, fewer rows visible */
+@media (max-width: 768px) {
+    .marquee {
+        padding: var(--s-xl) 0;
+    }
+
+    .marquee__word {
+        font-size: clamp(2rem, 10vw, 4rem);
+    }
 }

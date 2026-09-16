@@ -1,15 +1,106 @@
 /* === About / Team === */
 .about {
   width: 100%;
-  padding: var(--s-section) var(--s-gutter);
   overflow: hidden;
 }
 
+/* --- Philosophy: oversized words with image reveals --- */
+.about__philosophy {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.about__philosophy-item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 22vh var(--s-gutter) var(--s-xl);
+  gap: var(--s-lg);
+}
+
+.about__philosophy-item--dark {
+  background-color: var(--c-bg-dark);
+  color: var(--c-text-on-dark);
+}
+
+.about__philosophy-item--light {
+  background-color: #f0f0f0;
+  color: #0a0a0a;
+}
+
+.about__philosophy-left {
+  flex: 1;
+  max-width: 60%;
+  overflow: hidden;
+}
+
+.about__philosophy-number {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: var(--s-sm);
+}
+
+.about__philosophy-word {
+  font-family: var(--f-display);
+  font-size: clamp(6rem, 20vw, 18rem);
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15);
+  margin: 0;
+  /* Bleed off left edge */
+  margin-left: calc(var(--s-gutter) * -1);
+  padding-left: var(--s-gutter);
+}
+
+.about__philosophy-item--light .about__philosophy-word {
+  text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.08);
+}
+
+.about__philosophy-desc {
+  font-family: var(--f-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  max-width: 400px;
+  margin-top: var(--s-md);
+  opacity: 0.7;
+}
+
+.about__philosophy-right {
+  flex: 0 0 35%;
+  max-width: 35%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.about__philosophy-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* --- Main content area --- */
 .about__inner {
   max-width: var(--max-width);
   margin: 0 auto;
+  padding: var(--s-section) var(--s-gutter);
 }
 
+/* ============================================
+   HEADLINE — Press Plate Stamp
+   ============================================ */
 .about__statement {
   font-family: var(--f-display);
   font-size: var(--fs-display);
@@ -20,14 +111,96 @@
   margin-bottom: var(--s-3xl);
   word-break: keep-all;
   overflow-wrap: normal;
+  perspective: 1200px;
+  position: relative;
 }
 
+/* Individual stamp-word */
+.about__stamp-word {
+  display: inline-block;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  position: relative;
+  margin-right: 0.25em;
+  opacity: 0;
+}
+
+/* Teal glow that bleeds from each word on impact */
+.about__stamp-glow {
+  position: absolute;
+  inset: -8px -12px;
+  border-radius: 4px;
+  background: transparent;
+  box-shadow: 0 0 0px 0px var(--c-accent-teal);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Horizontal scanner line — real DOM element for GSAP targeting */
+.about__scanner {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.15em;
+  height: 2px;
+  background: var(--c-accent-teal);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+/* Remove the pseudo since we use a real element now */
+.about__statement::after {
+  display: none;
+}
+
+/* Screen shake keyframe */
+@keyframes stamp-shake {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  15% {
+    transform: translate(-3px, 1px);
+  }
+
+  30% {
+    transform: translate(2px, -2px);
+  }
+
+  45% {
+    transform: translate(-1px, 2px);
+  }
+
+  60% {
+    transform: translate(2px, 0);
+  }
+
+  75% {
+    transform: translate(-1px, -1px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.about--shake {
+  animation: stamp-shake 0.12s ease-out;
+}
+
+/* Legacy char class – keep for reduced motion fallback */
 .about__statement .char {
   display: inline-block;
   opacity: 0.15;
 }
 
-/* Value props */
+/* ============================================
+   FEATURE CARDS — Value Props with hover
+   ============================================ */
 .about__values {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -39,6 +212,27 @@
 
 .about__value {
   padding-right: var(--s-md);
+  position: relative;
+  cursor: pointer;
+}
+
+/* Teal left-edge rule on hover */
+.about__value::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--c-accent-teal);
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform 0.4s var(--ease-out-expo);
+  border-radius: 1px;
+}
+
+.about__value:hover::before {
+  transform: scaleY(1);
 }
 
 .about__value-number {
@@ -57,6 +251,32 @@
   text-transform: uppercase;
   letter-spacing: -0.01em;
   margin-bottom: var(--s-xs);
+  position: relative;
+  display: inline-block;
+}
+
+/* Teal underline on title hover */
+.about__value-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 2px;
+  background: var(--c-accent-teal);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.35s var(--ease-out-expo);
+  border-radius: 1px;
+}
+
+.about__value:hover .about__value-title::after {
+  transform: scaleX(1);
+}
+
+/* Soft teal glow on hover for entire card */
+.about__value:hover {
+  filter: drop-shadow(0 0 6px rgba(45, 212, 191, 0.08));
 }
 
 .about__value-desc {
@@ -66,7 +286,9 @@
   line-height: 1.6;
 }
 
-/* Team */
+/* ============================================
+   TEAM CARDS — Slide-in, 3D tilt, orbit ring
+   ============================================ */
 .about__team-label {
   font-family: var(--f-mono);
   font-size: var(--fs-label);
@@ -90,6 +312,43 @@
   padding: var(--s-md);
   border: 1px solid var(--c-border);
   border-radius: 4px;
+  position: relative;
+  perspective: 600px;
+  transform-style: preserve-3d;
+  transition: box-shadow 0.3s ease;
+  will-change: transform;
+  overflow: hidden;
+}
+
+/* Teal signature line on bottom edge — using pseudo as fallback */
+.about__member::after {
+  display: none;
+}
+
+/* Teal signature line — real DOM element for GSAP targeting */
+.about__member-sig {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--c-accent-teal);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.about__member:hover {
+  box-shadow: 0 4px 24px rgba(45, 212, 191, 0.08);
+}
+
+/* Avatar container for orbit ring */
+.about__member-avatar-wrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
 }
 
 .about__member-photo {
@@ -98,6 +357,48 @@
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
+  filter: grayscale(100%);
+  transition: filter 0.4s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.about__member:hover .about__member-photo {
+  filter: grayscale(0%);
+}
+
+/* Orbit ring */
+.about__member-orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 96px;
+  height: 96px;
+  margin-top: -48px;
+  margin-left: -48px;
+  border: 1.5px solid var(--c-accent-teal);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  /* Tilt the ring slightly for 3D feel */
+  transform: rotateX(60deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.about__member:hover .about__member-orbit {
+  opacity: 1;
+  animation: orbit-spin 4s linear infinite;
+}
+
+@keyframes orbit-spin {
+  from {
+    transform: rotateX(60deg) rotateZ(0deg);
+  }
+
+  to {
+    transform: rotateX(60deg) rotateZ(360deg);
+  }
 }
 
 .about__member-info {
@@ -122,8 +423,33 @@
   color: var(--c-text-muted);
 }
 
-/* Mobile */
+/* ============================================
+   MOBILE
+   ============================================ */
 @media (max-width: 768px) {
+  .about__philosophy-item {
+    flex-direction: column;
+    padding: 15vh var(--s-gutter) var(--s-xl);
+    gap: var(--s-md);
+  }
+
+  .about__philosophy-left {
+    max-width: 100%;
+  }
+
+  .about__philosophy-word {
+    font-size: clamp(3rem, 15vw, 6rem);
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .about__philosophy-right {
+    flex: 0 0 auto;
+    max-width: 100%;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
   .about__values {
     grid-template-columns: 1fr;
     gap: var(--s-lg);
@@ -135,5 +461,39 @@
 
   .about__statement {
     margin-bottom: var(--s-xl);
+  }
+
+  /* Disable 3D tilt on mobile — touch doesn't have the right feel */
+  .about__member {
+    perspective: none;
+    transform-style: flat;
+  }
+}
+
+/* Reduced motion: skip all custom animations */
+@media (prefers-reduced-motion: reduce) {
+  .about__stamp-word {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .about--shake {
+    animation: none !important;
+  }
+
+  .about__stamp-glow {
+    display: none;
+  }
+
+  .about__statement::after {
+    display: none;
+  }
+
+  .about__member-photo {
+    filter: none;
+  }
+
+  .about__member-orbit {
+    display: none;
   }
 }

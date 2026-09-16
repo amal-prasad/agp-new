@@ -2,8 +2,9 @@ import { useEffect } from 'react';
 import gsap from 'gsap';
 
 /**
- * useSectionWipe — reveal-wipe animation when section scrolls into view.
- * Requires a `.section-wipe` child element inside the section.
+ * useSectionWipe — clip-path reveal animation when section scrolls into view.
+ * Animates clip-path: inset(100% 0 0 0) → inset(0% 0 0 0) on the section itself.
+ * No overlay element needed.
  *
  * @param {React.RefObject} containerRef - the section ref
  */
@@ -17,18 +18,18 @@ export function useSectionWipe(containerRef) {
         const container = containerRef.current;
         if (!container) return;
 
-        const wipe = container.querySelector('.section-wipe');
-        if (!wipe) return;
+        // Set initial clip state
+        gsap.set(container, { clipPath: 'inset(100% 0 0 0)' });
 
         const ctx = gsap.context(() => {
-            gsap.to(wipe, {
-                scaleX: 0,
-                duration: 0.9,
+            gsap.to(container, {
+                clipPath: 'inset(0% 0 0 0)',
                 ease: 'expo.inOut',
                 scrollTrigger: {
                     trigger: container,
-                    start: 'top 70%',
-                    toggleActions: 'play none none reverse',
+                    start: 'top 80%',
+                    end: 'top 20%',
+                    scrub: 1,
                 },
             });
         }, container);

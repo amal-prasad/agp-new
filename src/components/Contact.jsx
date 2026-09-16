@@ -80,10 +80,7 @@ export default function Contact() {
             <div>
               <span className="contact__detail-label">Phone</span>
               <p className="contact__detail-value">
-                <a href="tel:+917314972922">+91 731 497 2922</a>
-              </p>
-              <p className="contact__detail-value">
-                <a href="tel:+919009992922">+91 900 999 2922</a>
+                <a href="tel:+919479525913">+91 94795 25913</a>
               </p>
             </div>
             <div>

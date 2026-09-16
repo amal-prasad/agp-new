@@ -1,7 +1,10 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useSectionWipe } from '../hooks/useSectionWipe';
 import '../styles/components/about.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const VALUES = [
   {
@@ -34,13 +37,47 @@ const TEAM = [
   },
 ];
 
+// Words for the headline stamp animation
+const HEADLINE_WORDS = ['ENGINEERING', 'YOUR', "BRAND'S", 'IDENTITY'];
+
 export default function About() {
   const sectionRef = useRef(null);
-  const statementRef = useRef(null);
-  const originalTextRef = useRef('');
+  const headlineRef = useRef(null);
+  const wordRefs = useRef([]);
+  const glowRefs = useRef([]);
+  const memberRefs = useRef([]);
 
   // Section wipe transition
   useSectionWipe(sectionRef);
+
+  // ----- 3D tilt handler for team cards -----
+  const handleMouseMove = useCallback((e, cardEl) => {
+    const rect = cardEl.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateY = ((x - centerX) / centerX) * 8;   // ±8deg
+    const rotateX = ((centerY - y) / centerY) * 6;    // ±6deg
+
+    gsap.to(cardEl, {
+      rotateX,
+      rotateY,
+      duration: 0.3,
+      ease: 'power2.out',
+      transformPerspective: 600,
+    });
+  }, []);
+
+  const handleMouseLeave = useCallback((cardEl) => {
+    gsap.to(cardEl, {
+      rotateX: 0,
+      rotateY: 0,
+      duration: 0.5,
+      ease: 'power3.out',
+    });
+  }, []);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -48,72 +85,116 @@ export default function About() {
     ).matches;
 
     if (prefersReducedMotion) {
-      // Make all chars visible
-      const chars = statementRef.current?.querySelectorAll('.char');
-      chars?.forEach((c) => (c.style.opacity = '1'));
+      // Make everything visible immediately
+      wordRefs.current.forEach((w) => {
+        if (w) w.style.opacity = '1';
+      });
       return;
     }
 
-    const statementEl = statementRef.current;
-    // Store the original HTML for cleanup/restore (preserves <br />)
-    if (statementEl && !originalTextRef.current) {
-      originalTextRef.current = statementEl.innerHTML;
-    }
-
+    const section = sectionRef.current;
     const ctx = gsap.context(() => {
-      // Split statement text into characters — preserve <br> line breaks
-      if (statementEl) {
-        const html = originalTextRef.current;
-        statementEl.innerHTML = '';
-        const fragment = document.createDocumentFragment();
-        // Split by <br /> or <br> to preserve line breaks
-        const lines = html.split(/<br\s*\/?>/i);
-        lines.forEach((line, lineIndex) => {
-          // Trim whitespace from each line segment
-          const trimmedLine = line.replace(/&[^;]+;/g, (m) => {
-            const el = document.createElement('span');
-            el.innerHTML = m;
-            return el.textContent;
-          }).trim();
-          trimmedLine.split('').forEach((char) => {
-            const span = document.createElement('span');
-            span.className = 'char';
-            span.textContent = char === ' ' ? '\u00A0' : char;
-            fragment.appendChild(span);
-          });
-          // Insert <br> between lines (not after the last)
-          if (lineIndex < lines.length - 1) {
-            fragment.appendChild(document.createElement('br'));
-          }
-        });
-        statementEl.appendChild(fragment);
 
-        const chars = statementEl.querySelectorAll('.char');
-        gsap.to(chars, {
-          opacity: 1,
-          duration: 0.3,
-          stagger: 0.015,
-          ease: 'none',
-          force3D: true,
-          scrollTrigger: {
-            trigger: statementEl,
-            start: 'top 80%',
-            end: 'top 20%',
-            scrub: 1,
+      /* ================================================
+         1) HEADLINE — Press Plate Stamp Timeline
+         ================================================ */
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: headlineRef.current,
+          start: 'top 75%',
+          toggleActions: 'play none none none',
+        },
+      });
+
+      wordRefs.current.forEach((wordEl, i) => {
+        if (!wordEl) return;
+        const glowEl = glowRefs.current[i];
+
+        // --- Slam down: starts tiny/tilted, overshoots, then settles ---
+        tl.fromTo(
+          wordEl,
+          {
+            scale: 0.3,
+            opacity: 0,
+            rotateX: -75,
+            transformOrigin: 'center bottom',
           },
-        });
+          {
+            scale: 1.08,
+            opacity: 1,
+            rotateX: 0,
+            duration: 0.18,
+            ease: 'power4.out',
+          },
+          i === 0 ? '+=0' : '+=0.06'     // small gap between each word
+        );
+
+        // --- Snap-back settle ---
+        tl.to(
+          wordEl,
+          {
+            scale: 1,
+            duration: 0.1,
+            ease: 'power2.inOut',
+          },
+          '>'                             // right after the overshoot
+        );
+
+        // --- Screen shake (at same time as snap-back) ---
+        tl.add(() => {
+          section.classList.add('about--shake');
+          gsap.delayedCall(0.12, () => section.classList.remove('about--shake'));
+        }, '<');
+
+        // --- Teal ink glow ---
+        if (glowEl) {
+          tl.fromTo(
+            glowEl,
+            { opacity: 1, boxShadow: '0 0 18px 6px rgba(45, 212, 191, 0.55)' },
+            {
+              opacity: 0,
+              boxShadow: '0 0 0px 0px rgba(45, 212, 191, 0)',
+              duration: 0.35,
+              ease: 'power2.out',
+            },
+            '<'                           // simultaneous with snap-back
+          );
+        }
+      });
+
+      // --- Horizontal scanner line ---
+      const scannerLine = headlineRef.current?.querySelector('.about__scanner');
+      if (scannerLine) {
+        tl.fromTo(
+          scannerLine,
+          { scaleX: 0, opacity: 1 },
+          {
+            scaleX: 1,
+            duration: 0.45,
+            ease: 'power2.inOut',
+            transformOrigin: 'left center',
+          },
+          '+=0.15'                        // slight pause after last word
+        );
+        tl.to(
+          scannerLine,
+          { opacity: 0, duration: 0.25 },
+          '>'
+        );
       }
 
-      // Values fade in with stagger
-      const values = sectionRef.current.querySelectorAll('.about__value');
+      /* ================================================
+         2) FEATURE CARDS — Rise from below with stagger
+         ================================================ */
+      const values = section.querySelectorAll('.about__value');
       gsap.fromTo(
         values,
-        { opacity: 0, y: 40 },
+        { opacity: 0, y: 60 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
-          stagger: 0.15,
+          duration: 0.7,
+          stagger: 0.2,
           ease: 'power3.out',
           force3D: true,
           scrollTrigger: {
@@ -125,14 +206,16 @@ export default function About() {
       );
 
       // Counter animation on value numbers
-      const numberEls = sectionRef.current.querySelectorAll('.about__value-number');
+      const numberEls = section.querySelectorAll('.about__value-number');
       numberEls.forEach((el) => {
-        const targetText = el.textContent; // e.g. "(01)"
+        const targetText = el.textContent;
         const match = targetText.match(/(\d+)/);
         if (match) {
           const targetNum = parseInt(match[1], 10);
           const prefix = targetText.substring(0, targetText.indexOf(match[1]));
-          const suffix = targetText.substring(targetText.indexOf(match[1]) + match[1].length);
+          const suffix = targetText.substring(
+            targetText.indexOf(match[1]) + match[1].length
+          );
 
           gsap.from(
             { val: 0 },
@@ -146,23 +229,27 @@ export default function About() {
                 toggleActions: 'play none none none',
               },
               onUpdate: function () {
-                el.textContent = `${prefix}${String(Math.round(this.targets()[0].val)).padStart(2, '0')}${suffix}`;
+                el.textContent = `${prefix}${String(
+                  Math.round(this.targets()[0].val)
+                ).padStart(2, '0')}${suffix}`;
               },
             }
           );
         }
       });
 
-      // Team cards fade in
-      const members = sectionRef.current.querySelectorAll('.about__member');
+      /* ================================================
+         3) TEAM CARDS — Slide from left + signature line
+         ================================================ */
+      const members = section.querySelectorAll('.about__member');
       gsap.fromTo(
         members,
-        { opacity: 0, y: 30 },
+        { opacity: 0, x: -80 },
         {
           opacity: 1,
-          y: 0,
+          x: 0,
           duration: 0.8,
-          stagger: 0.2,
+          stagger: 0.25,
           ease: 'power3.out',
           force3D: true,
           scrollTrigger: {
@@ -170,27 +257,82 @@ export default function About() {
             start: 'top 85%',
             toggleActions: 'play none none none',
           },
+          onComplete() {
+            // Grow teal signature line on each card's ::after
+            members.forEach((card, idx) => {
+              gsap.to(card, {
+                '--sig-scaleX': 1,
+                duration: 0.4,
+                delay: idx * 0.15,
+                ease: 'power2.out',
+              });
+              // Also directly target the pseudo via the element's after
+              const afterPseudo = card.querySelector('.about__member-sig');
+              if (afterPseudo) {
+                gsap.to(afterPseudo, {
+                  scaleX: 1,
+                  duration: 0.4,
+                  delay: idx * 0.15,
+                  ease: 'power2.out',
+                  transformOrigin: 'left center',
+                });
+              }
+            });
+          },
         }
       );
     }, sectionRef);
 
+    // --- Attach 3D tilt listeners for team cards ---
+    const cards = memberRefs.current;
+    const moveHandlers = [];
+    const leaveHandlers = [];
+
+    cards.forEach((card) => {
+      if (!card) return;
+      const onMove = (e) => handleMouseMove(e, card);
+      const onLeave = () => handleMouseLeave(card);
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', onLeave);
+      moveHandlers.push({ card, onMove });
+      leaveHandlers.push({ card, onLeave });
+    });
+
     return () => {
       ctx.revert();
-      // Restore original text so StrictMode re-mount works correctly
-      if (statementRef.current && originalTextRef.current) {
-        statementRef.current.innerHTML = originalTextRef.current;
-      }
+      moveHandlers.forEach(({ card, onMove }) =>
+        card.removeEventListener('mousemove', onMove)
+      );
+      leaveHandlers.forEach(({ card, onLeave }) =>
+        card.removeEventListener('mouseleave', onLeave)
+      );
     };
-  }, []);
+  }, [handleMouseMove, handleMouseLeave]);
 
   return (
     <section className="about section section-dark" id="about" ref={sectionRef}>
-      <div className="section-wipe" />
+
       <div className="about__inner">
-        <h2 className="about__statement" ref={statementRef}>
-          ENGINEERING YOUR BRAND'S<br />IDENTITY
+        {/* ---------- HEADLINE ---------- */}
+        <h2 className="about__statement" ref={headlineRef}>
+          {HEADLINE_WORDS.map((word, i) => (
+            <span
+              className="about__stamp-word"
+              key={word}
+              ref={(el) => (wordRefs.current[i] = el)}
+            >
+              {word}
+              <span
+                className="about__stamp-glow"
+                ref={(el) => (glowRefs.current[i] = el)}
+              />
+            </span>
+          ))}
+          {/* Scanner line element (real DOM so GSAP can target it) */}
+          <span className="about__scanner" />
         </h2>
 
+        {/* ---------- FEATURE CARDS ---------- */}
         <div className="about__values">
           {VALUES.map((value) => (
             <div className="about__value" key={value.number}>
@@ -201,20 +343,30 @@ export default function About() {
           ))}
         </div>
 
+        {/* ---------- TEAM ---------- */}
         <span className="about__team-label">Our Team</span>
         <div className="about__team">
-          {TEAM.map((member) => (
-            <div className="about__member" key={member.name}>
-              <img
-                src={member.photo}
-                alt={member.name}
-                className="about__member-photo"
-                loading="lazy"
-              />
+          {TEAM.map((member, i) => (
+            <div
+              className="about__member"
+              key={member.name}
+              ref={(el) => (memberRefs.current[i] = el)}
+            >
+              <div className="about__member-avatar-wrap">
+                <img
+                  src={member.photo}
+                  alt={member.name}
+                  className="about__member-photo"
+                  loading="lazy"
+                />
+                <span className="about__member-orbit" />
+              </div>
               <div className="about__member-info">
                 <span className="about__member-name">{member.name}</span>
                 <span className="about__member-role">{member.role}</span>
               </div>
+              {/* Teal signature line */}
+              <span className="about__member-sig" />
             </div>
           ))}
         </div>

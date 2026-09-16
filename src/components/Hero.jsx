@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
-import ThreeCube from './ThreeCube';
+
 import '../styles/components/hero.css';
 
 export default function Hero({ isLoading }) {
@@ -68,11 +68,6 @@ export default function Hero({ isLoading }) {
 
   return (
     <section className="hero section-light" id="hero" ref={heroRef}>
-      {/* 3D wireframe cube — scroll-scrubbed */}
-      <div className="hero__3d-slot" id="hero-3d-slot">
-        <ThreeCube />
-      </div>
-
       <div className="hero__content">
         <h1 className="hero__title">
           <span className="hero__title-line">

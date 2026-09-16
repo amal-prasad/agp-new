@@ -52,7 +52,16 @@
   white-space: nowrap;
 }
 
+.clients__group {
+  display: flex;
+  align-items: center;
+  gap: var(--s-lg);
+}
+
 .clients__item {
+  display: flex;
+  align-items: center;
+  gap: var(--s-md);
   font-family: var(--f-display);
   font-size: clamp(1.2rem, 2.5vw, 2rem);
   font-weight: 600;
@@ -60,6 +69,14 @@
   letter-spacing: 0.05em;
   color: var(--c-text);
   flex-shrink: 0;
+}
+
+.clients__logo {
+  height: clamp(1.5rem, 3vw, 2.5rem);
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 4px;
 }
 
 .clients__separator {

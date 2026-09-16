@@ -1,4 +1,4 @@
-/* === Hero === */
+/* === Hero (Dark Theme) === */
 .hero {
   width: 100%;
   min-height: 100vh;
@@ -12,12 +12,13 @@
 
 .hero__3d-slot {
   position: absolute;
-  top: 0;
+  top: 15%;
   right: 0;
   bottom: 0;
-  width: 50%;
+  width: 45%;
   z-index: 0;
   pointer-events: none;
+  opacity: 0.3;
 }
 
 .hero__content {
@@ -35,7 +36,6 @@
   line-height: 0.85;
   letter-spacing: -0.04em;
   text-transform: uppercase;
-  color: var(--c-text);
 }
 
 .hero__title-line {
@@ -66,6 +66,8 @@
   display: inline;
   vertical-align: middle;
   object-fit: contain;
+  /* Convert black logo to pure red */
+  filter: invert(16%) sepia(99%) saturate(7404%) hue-rotate(358deg) brightness(118%) contrast(115%);
 }
 
 .hero__subtitle {
@@ -133,6 +135,10 @@
   .hero {
     padding: var(--s-xl) var(--s-gutter) var(--s-lg);
     min-height: 100svh;
+  }
+
+  .hero__3d-slot {
+    display: none;
   }
 
   .hero__meta--top-right,

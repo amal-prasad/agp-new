@@ -1,55 +1,81 @@
 /* === Preloader === */
 .preloader {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-preloader);
-  background-color: var(--c-bg-dark);
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  padding: var(--s-lg);
-  pointer-events: all;
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-preloader);
+    /* No background — panels provide the visual background */
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: var(--s-lg);
+    pointer-events: all;
 }
 
+/* --- Split panels (background layers that slide apart) --- */
+.preloader__panel {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background-color: var(--c-bg-dark);
+    z-index: 1;
+    will-change: transform;
+}
+
+.preloader__panel--left {
+    left: 0;
+}
+
+.preloader__panel--right {
+    right: 0;
+}
+
+/* --- Content elements sit above panels --- */
 .preloader__counter {
-  font-family: var(--f-mono);
-  font-size: clamp(3rem, 8vw, 8rem);
-  font-weight: 300;
-  color: var(--c-bg);
-  letter-spacing: -0.02em;
-  line-height: 1;
+    position: relative;
+    z-index: 2;
+    font-family: var(--f-mono);
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 300;
+    color: var(--c-bg);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
 }
 
 .preloader__line {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background-color: var(--c-bg);
-  transform: scaleX(0);
-  transform-origin: left center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--c-bg);
+    transform: scaleX(0);
+    transform-origin: left center;
+    z-index: 2;
 }
 
 .preloader__label {
-  position: absolute;
-  top: var(--s-lg);
-  left: var(--s-lg);
-  font-family: var(--f-mono);
-  font-size: var(--fs-mono);
-  letter-spacing: 0.15em;
-  color: var(--c-text-muted);
-  text-transform: uppercase;
+    position: absolute;
+    top: var(--s-lg);
+    left: var(--s-lg);
+    z-index: 2;
+    font-family: var(--f-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: 0.15em;
+    color: var(--c-text-muted);
+    text-transform: uppercase;
 }
 
 .preloader__brand {
-  position: absolute;
-  top: var(--s-lg);
-  right: var(--s-lg);
-  font-family: var(--f-display);
-  font-size: var(--fs-small);
-  font-weight: 700;
-  color: var(--c-bg);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+    position: absolute;
+    top: var(--s-lg);
+    right: var(--s-lg);
+    z-index: 2;
+    font-family: var(--f-display);
+    font-size: var(--fs-small);
+    font-weight: 700;
+    color: var(--c-bg);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }

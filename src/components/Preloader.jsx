@@ -6,6 +6,8 @@ export default function Preloader({ onComplete }) {
   const preloaderRef = useRef(null);
   const counterRef = useRef(null);
   const lineRef = useRef(null);
+  const panelLeftRef = useRef(null);
+  const panelRightRef = useRef(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -48,14 +50,33 @@ export default function Preloader({ onComplete }) {
       0
     );
 
-    // Screen wipe out
-    tl.to(preloaderRef.current, {
-      yPercent: -100,
+    // Fade out counter, label, brand, and line before split
+    tl.to(
+      [counterRef.current, lineRef.current,
+       preloaderRef.current.querySelector('.preloader__label'),
+       preloaderRef.current.querySelector('.preloader__brand')],
+      {
+        opacity: 0,
+        duration: 0.3,
+        ease: 'power2.in',
+      },
+      '+=0.3'
+    );
+
+    // Split-panel reveal: left panel slides left, right panel slides right
+    tl.to(panelLeftRef.current, {
+      xPercent: -100,
       duration: 1,
       ease: 'power4.inOut',
-      delay: 0.3,
       force3D: true,
-    });
+    }, '>');
+
+    tl.to(panelRightRef.current, {
+      xPercent: 100,
+      duration: 1,
+      ease: 'power4.inOut',
+      force3D: true,
+    }, '<'); // simultaneous with left panel
 
     tl.set(preloaderRef.current, { display: 'none' });
 
@@ -66,6 +87,11 @@ export default function Preloader({ onComplete }) {
 
   return (
     <div className="preloader" ref={preloaderRef}>
+      {/* Split panels — background layers that slide apart */}
+      <div className="preloader__panel preloader__panel--left" ref={panelLeftRef} />
+      <div className="preloader__panel preloader__panel--right" ref={panelRightRef} />
+
+      {/* Content — sits above panels */}
       <div className="preloader__label">Loading</div>
       <div className="preloader__brand">AGP Enterprises</div>
       <div className="preloader__counter" ref={counterRef}>
