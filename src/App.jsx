@@ -11,8 +11,8 @@ import About from './components/About';
 import Clients from './components/Clients';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import CustomCursor from './components/CustomCursor';
 import './styles/global.css';
+import './styles/components/cursor.css';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -30,7 +30,6 @@ export default function App() {
 
   return (
     <>
-      <CustomCursor />
       <Preloader onComplete={handlePreloaderComplete} />
       <Navbar isLoading={isLoading} />
       <main>
