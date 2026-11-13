@@ -1,86 +1,25 @@
-/* === Custom Cursor — Elastic Lerp Follow === */
-.cursor-dot,
-.cursor-ring {
+/* === Custom Cursor — orange fill, black edge === */
+.cursor-dot {
     position: fixed;
     top: 0;
     left: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #FF6A00;
+    border: 2px solid #0A0A0A;
     pointer-events: none;
     z-index: 9999;
-    border-radius: 50%;
     will-change: transform;
 }
 
-.cursor-dot {
-    width: 6px;
-    height: 6px;
-    background-color: var(--c-text, #0A0A0A);
-}
-
-.cursor-ring {
-    width: 40px;
-    height: 40px;
-    border: 1.5px solid var(--c-text, #0A0A0A);
-    opacity: 0.4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
-}
-
-/* Active/hover state — ring grows, fills */
-.cursor-ring--active {
-    width: 60px;
-    height: 60px;
-    opacity: 0.9;
-    background-color: var(--c-text, #0A0A0A);
-    border-color: var(--c-text, #0A0A0A);
-}
-
-/* Label inside ring */
-.cursor-label {
-    font-family: var(--f-mono, monospace);
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--c-bg, #FAFAF8);
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    white-space: nowrap;
-}
-
-.cursor-label--visible {
-    opacity: 1;
-}
-
-/* Inverted state on dark sections */
-.cursor-dot.cursor--inverted {
-    background-color: var(--c-text-on-dark, #FAFAF8);
-}
-
-.cursor-ring.cursor--inverted {
-    border-color: var(--c-text-on-dark, #FAFAF8);
-}
-
-.cursor-ring.cursor--inverted.cursor-ring--active {
-    background-color: var(--c-text-on-dark, #FAFAF8);
-}
-
-.cursor-ring.cursor--inverted .cursor-label {
-    color: var(--c-bg-dark, #0A0A0A);
-}
-
-/* Hide default cursor when custom is active */
 .custom-cursor-active,
 .custom-cursor-active * {
     cursor: none !important;
 }
 
-/* Don't show on touch devices */
 @media (hover: none) {
-
-    .cursor-dot,
-    .cursor-ring {
+    .cursor-dot {
         display: none;
     }
 }
