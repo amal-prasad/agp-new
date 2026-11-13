@@ -93,8 +93,8 @@ export default function Services() {
         ScrollTrigger.create({
           trigger: card,
           ...(isMobile
-            ? { start: 'top 60%' }
-            : { containerAnimation: tween, start: 'left 70%' }),
+            ? { start: 'top 50%', end: 'bottom 50%' }
+            : { containerAnimation: tween, start: 'left 50%', end: 'right 50%' }),
           toggleClass: { targets: card, className: 'is-light' },
         });
       });
