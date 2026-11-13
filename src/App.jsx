@@ -6,7 +6,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
 import Marquee from './components/Marquee';
-import Work from './components/Work';
+// import Work from './components/Work';
 import About from './components/About';
 import Clients from './components/Clients';
 import Contact from './components/Contact';
@@ -37,7 +37,7 @@ export default function App() {
         <Hero isLoading={isLoading} />
         <Services />
         <Marquee />
-        <Work />
+        {/* <Work /> */}
         <About />
         <Clients />
         <Contact />

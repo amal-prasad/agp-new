@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useWordReveal } from '../hooks/useWordReveal';
 import '../styles/components/services.css';
 
@@ -71,7 +72,8 @@ export default function Services() {
         return -(track.scrollWidth - window.innerWidth);
       };
 
-      gsap.to(track, {
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const tween = gsap.to(track, {
         x: getScrollAmount,
         ease: 'none',
         force3D: true,
@@ -84,6 +86,17 @@ export default function Services() {
           invalidateOnRefresh: true,
           anticipatePin: 1,
         },
+      });
+
+      // Cards turn white as they scroll in (scroll-driven, no cursor needed)
+      section.querySelectorAll('.services__card').forEach((card) => {
+        ScrollTrigger.create({
+          trigger: card,
+          ...(isMobile
+            ? { start: 'top 60%' }
+            : { containerAnimation: tween, start: 'left 70%' }),
+          toggleClass: { targets: card, className: 'is-light' },
+        });
       });
     }, section);
 

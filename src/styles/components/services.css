@@ -59,14 +59,13 @@
   transition: background-color var(--dur-fast) var(--ease-smooth);
 }
 
-.services__card:hover {
+.services__card.is-light {
   background-color: var(--c-text);
-  transition-delay: 0.1s;
 }
 
-.services__card:hover .services__card-number,
-.services__card:hover .services__card-name,
-.services__card:hover .services__card-desc {
+.services__card.is-light .services__card-number,
+.services__card.is-light .services__card-name,
+.services__card.is-light .services__card-desc {
   color: var(--c-bg);
 }
 

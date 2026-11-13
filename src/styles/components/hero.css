@@ -141,6 +141,11 @@
     display: none;
   }
 
+  /* fit "ENTERPRISES" in viewport width (~6.8em wide) instead of clipping */
+  .hero__title {
+    font-size: calc((100vw - 2 * var(--s-gutter)) / 6.8);
+  }
+
   .hero__meta--top-right,
   .hero__meta--bottom-right {
     display: none;
