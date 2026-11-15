@@ -29,7 +29,7 @@ export function useSectionWipe(containerRef) {
                     trigger: container,
                     start: 'top 80%',
                     end: 'top 20%',
-                    scrub: 1,
+                    scrub: true,
                 },
             });
         }, container);

@@ -121,16 +121,15 @@ export default function Navbar({ isLoading }) {
         // Detect if navbar overlaps a dark section
         const nav = navRef.current;
         if (nav) {
+          // Read-only rect checks (no style writes → no forced reflow per frame)
           const navRect = nav.getBoundingClientRect();
           const navMidY = navRect.top + navRect.height / 2;
-          const navMidX = navRect.left + navRect.width / 2;
-          nav.style.pointerEvents = 'none';
-          const elBehind = document.elementFromPoint(navMidX, navMidY);
-          nav.style.pointerEvents = '';
-          if (elBehind) {
-            const darkSection = elBehind.closest('.section-dark');
-            setOnDark(!!darkSection);
+          let dark = false;
+          for (const s of document.querySelectorAll('.section-dark')) {
+            const r = s.getBoundingClientRect();
+            if (r.top <= navMidY && r.bottom >= navMidY) { dark = true; break; }
           }
+          setOnDark(dark);
         }
       });
     };

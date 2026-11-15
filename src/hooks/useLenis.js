@@ -18,8 +18,8 @@ export function useLenis() {
     if (prefersReducedMotion) return;
 
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      // ponytail: lerp beats duration+easing for wheel input — frame-rate independent, snappier, no stalls
+      lerp: 0.12,
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
@@ -32,8 +32,9 @@ export function useLenis() {
     // Sync Lenis with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
 
-    function raf() {
-      lenis.raf(performance.now());
+    // Drive Lenis from GSAP's ticker time so both share one clock (avoids scroll/animation drift = jitter)
+    function raf(time) {
+      lenis.raf(time * 1000);
     }
 
     gsap.ticker.add(raf);

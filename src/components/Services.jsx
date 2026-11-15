@@ -73,6 +73,8 @@ export default function Services() {
       };
 
       const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const cards = section.querySelectorAll('.services__card');
+      let activeIdx = -1;
       gsap.to(track, {
         x: getScrollAmount,
         ease: 'none',
@@ -82,23 +84,25 @@ export default function Services() {
           start: 'top top',
           end: () => `+=${track.scrollWidth - window.innerWidth}`,
           pin: true,
-          scrub: 1,
+          scrub: true,
           invalidateOnRefresh: true,
           anticipatePin: 1,
           // Desktop: scroll progress picks the one white card (works for all 8, incl. first/last)
           onUpdate: isMobile
             ? undefined
             : (self) => {
-                const cards = section.querySelectorAll('.services__card');
                 const idx = Math.min(cards.length - 1, Math.floor(self.progress * cards.length));
-                cards.forEach((c, i) => c.classList.toggle('is-light', i === idx));
+                if (idx === activeIdx) return; // only touch DOM when the white card changes
+                cards[activeIdx]?.classList.remove('is-light');
+                cards[idx].classList.add('is-light');
+                activeIdx = idx;
               },
         },
       });
 
       // Mobile (stacked): card turns white while crossing screen centre
       if (isMobile) {
-        section.querySelectorAll('.services__card').forEach((card) => {
+        cards.forEach((card) => {
           ScrollTrigger.create({
             trigger: card,
             start: 'top 50%',

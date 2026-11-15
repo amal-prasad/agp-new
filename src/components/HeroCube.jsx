@@ -39,7 +39,7 @@ export default function HeroCube() {
             trigger: heroEl,
             start: 'top top',
             end: 'bottom top',
-            scrub: 1.5,
+            scrub: true,
             onEnter: () => autoTween.pause(),
             onLeaveBack: () => autoTween.resume(),
           },

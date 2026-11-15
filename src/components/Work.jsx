@@ -71,7 +71,7 @@ export default function Work() {
           start: 'top top',
           end: '+=300%',
           pin: true,
-          scrub: 1.5,
+          scrub: true,
           anticipatePin: 1,
         },
       });

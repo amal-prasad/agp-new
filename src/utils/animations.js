@@ -107,7 +107,7 @@ export function characterReveal(container, options = {}) {
  * Create a horizontal scroll setup
  */
 export function createHorizontalScroll(trigger, track, options = {}) {
-  const { scrub = 1, end } = options;
+  const { scrub = true, end } = options;
   const totalWidth = track.scrollWidth - window.innerWidth;
 
   return gsap.to(track, {

@@ -52,7 +52,7 @@ export default function Marquee() {
               trigger: section,
               start: 'top bottom',
               end: 'bottom top',
-              scrub: 1,
+              scrub: true,
             },
           }
         );

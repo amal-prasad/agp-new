@@ -58,7 +58,7 @@ export default function Hero({ isLoading }) {
           trigger: heroRef.current,
           start: 'top top',
           end: 'bottom top',
-          scrub: 1,
+          scrub: true,
         },
       });
     }, heroRef);
