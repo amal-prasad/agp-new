@@ -205,39 +205,6 @@ export default function About() {
         }
       );
 
-      // Counter animation on value numbers
-      const numberEls = section.querySelectorAll('.about__value-number');
-      numberEls.forEach((el) => {
-        const targetText = el.textContent;
-        const match = targetText.match(/(\d+)/);
-        if (match) {
-          const targetNum = parseInt(match[1], 10);
-          const prefix = targetText.substring(0, targetText.indexOf(match[1]));
-          const suffix = targetText.substring(
-            targetText.indexOf(match[1]) + match[1].length
-          );
-
-          gsap.from(
-            { val: 0 },
-            {
-              val: targetNum,
-              duration: 1.5,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: el,
-                start: 'top 85%',
-                toggleActions: 'play none none none',
-              },
-              onUpdate: function () {
-                el.textContent = `${prefix}${String(
-                  Math.round(this.targets()[0].val)
-                ).padStart(2, '0')}${suffix}`;
-              },
-            }
-          );
-        }
-      });
-
       /* ================================================
          3) TEAM CARDS — Slide from left + signature line
          ================================================ */

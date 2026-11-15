@@ -73,7 +73,7 @@ export default function Services() {
       };
 
       const isMobile = window.matchMedia('(max-width: 768px)').matches;
-      const tween = gsap.to(track, {
+      gsap.to(track, {
         x: getScrollAmount,
         ease: 'none',
         force3D: true,
@@ -85,19 +85,28 @@ export default function Services() {
           scrub: 1,
           invalidateOnRefresh: true,
           anticipatePin: 1,
+          // Desktop: scroll progress picks the one white card (works for all 8, incl. first/last)
+          onUpdate: isMobile
+            ? undefined
+            : (self) => {
+                const cards = section.querySelectorAll('.services__card');
+                const idx = Math.min(cards.length - 1, Math.floor(self.progress * cards.length));
+                cards.forEach((c, i) => c.classList.toggle('is-light', i === idx));
+              },
         },
       });
 
-      // Cards turn white as they scroll in (scroll-driven, no cursor needed)
-      section.querySelectorAll('.services__card').forEach((card) => {
-        ScrollTrigger.create({
-          trigger: card,
-          ...(isMobile
-            ? { start: 'top 50%', end: 'bottom 50%' }
-            : { containerAnimation: tween, start: 'left 50%', end: 'right 50%' }),
-          toggleClass: { targets: card, className: 'is-light' },
+      // Mobile (stacked): card turns white while crossing screen centre
+      if (isMobile) {
+        section.querySelectorAll('.services__card').forEach((card) => {
+          ScrollTrigger.create({
+            trigger: card,
+            start: 'top 50%',
+            end: 'bottom 50%',
+            toggleClass: { targets: card, className: 'is-light' },
+          });
         });
-      });
+      }
     }, section);
 
     return () => ctx.revert();
